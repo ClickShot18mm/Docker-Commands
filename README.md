@@ -190,29 +190,11 @@ docker history `container`
 ```
 
 
-## LIST NETWORK
-```git
-docker network ls
-docker network ls | less -S
-```
-
-## REMOVE NETWORK
-```git
-docker network rm `network`
-```
-
-## SHOW NETWORK INFORMATION
-```git
-docker network inspect `network`
-```
-
-## CONNECT A CONTAINER TO A NETWORK
-```git
-docker network connect `network` `container`
-```
-
-## DISCONNECT A CONTAINER TO A NETWORK
-```git
-docker network disconnect `network` `container`
-```
-
+## NETWORK RELATED COMMANDS
+PATTERN | DESCRIPTION
+------------ | -------------
+docker network ls <br /> docker network ls \| less -S | LIST NETWORK
+docker network rm ```network``` | REMOVE NETWORK
+docker network inspect ```network``` | SHOW NETWORK INFORMATION
+docker network connect ```network``` ```container``` | CONNECT A CONTAINER TO A NETWORK
+docker network disconnect ```network``` ```container``` | DISCONNECT A CONTAINER TO A NETWORK
