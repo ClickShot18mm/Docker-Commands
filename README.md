@@ -155,6 +155,42 @@ MAP port to docker container
 ```
 
 
+## VOLUME MAPPING
+```git
+docker run -v /opt/datadir:/var/lib/mysql mysql
+```
+
+By running this command we are going to save mysql data in our local storage so that even if the container is remove we have the data.
+
+
+
+## GET CONTAINER INFORMATION
+```git
+docker inspect `container`
+```
+
+
+## GET THE IP ADDRESS OF YOUR CONATINER
+```git
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' `container_id`
+docker inspect `container_id` | grep IPAddress
+docker inspect `container_id` | jq .[0].NetworkSettings.Networks[].IPAddress
+```
+
+
+## GET LOGS OF A CONTAINER
+```git
+docker logs `container`
+```
+
+
+## HISTORY OF CONTAINER
+```git
+docker history `container`
+```
+
+
+
 
 
 
