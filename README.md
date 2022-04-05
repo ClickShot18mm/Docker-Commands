@@ -9,6 +9,26 @@ curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 ```
 
+When you install Docker on a linux host you're actually installing three different competence.<br />
+DOCKER ENGINE<br />
+1. DOCKER CLI
+2. REST API
+3. DOCKER DEAMON
+
+- The **DOCKER CLI** is nothing but the command line interface to perform actions such as running a container stopping containers destroying images etc. It uses the REST API to interact with the DOCKER DEAMON.
+
+- The **DOCKER REST API** server is the API interface that programs can use to talk to the DEAMON and provide instructions.
+
+- The **DOCKER DEAMON** is a background process that manages Docker objects such as the images containers volumes and networks.
+
+<br />
+Dockers CLI need not necessarily be on the same host. <br />Simply use the -h option on the docker command and specify the remote Docker engine address and the port.<br /><br />
+
+```git
+docker -H={{remote-docker-engine}}:{{port}} run {{image}}
+```
+
+
 ## CHECK DOCKER VERSION
 ```git
 docker version
@@ -87,7 +107,12 @@ Containers are meant to run a specific task or process, Once the task is complet
 If the web service inside the container is stopped or a crash then the container exits.
 This is why when you run a container from an ubuntu image it stops immediately because Ubuntu is just an image of an operating system that is used as the base image for other applications. There is no process or application running in it by default.
 
+ <br /> <br />
+> `docker run nginx`	is same as 	`docker run docker.io/nginx/nginx` <br />  <br />image: `docker.io/nginx/nginx` <br />  <br />where <br />`docker.io` is the **REGISTRY** (Default) <br />`nginx`		is the **USER ACCOUNT** (if not given use the same name as the IMAGE REPOSITORY) <br />`nginx`		is the **IMAGE REPOSITORY** <br />  <br /> **DOCKER REGISTRY** (docker.io, google's registry gcr.io, aws, azure, dcp)
 
+
+
+ <br /> <br />
 ## DOWNLOAD AN IMAGE BUT NOT RUNNING
 ```git
 docker pull `image`
