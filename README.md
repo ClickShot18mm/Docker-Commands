@@ -3,7 +3,18 @@
 A list of my commonly used Docker commands.
 
 
-Before Setup, First We Are Going To Update Some Configuration In Our Bash File By Running Few Command:
+## Installation
+```git
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+```
+
+## CHECK DOCKER VERSION
+```git
+docker version
+```
+
+## Before Going Deeper, We Are Going To Update Some Configuration In Our Bash File By Running Few Command:
 ```git
 sudo apt install net-tools
 sudo apt install jq
@@ -57,15 +68,6 @@ dpsjson
 ```
 
 
-## Installation
-
-1. Create an account on GitHub
-2. Create a new repository for your project
-3. Start a project and give it a name
-4. Grab the HTTPS link to this new repository	
-```git
-https://github.com/YourUsername/some-small-app.git
-```
 5. Bind this remote repository to your local repository 
 via HTTPS 
 ```git
