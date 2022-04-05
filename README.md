@@ -68,59 +68,97 @@ dpsjson
 ```
 
 
-5. Bind this remote repository to your local repository 
-via HTTPS 
-```git
-git remote add origin https://github.com/YourUsername/some-small-app.git
-```
-push tells Git to push your files to a remote repository
-```git
-git push -u origin master
-```	
-"-u", we can run only "git push" next time!".
+## RUN A CONATINER FROM AN IMAGE
+Run an instance of the image on the docker host, if image is not on the host it will go to docker hub and pull
 
-"git push" is that you have to enter your credentials each time you push code to GitHub.
-6. Bind this remote repository to your local repository via SSH
-```git
-git remote add origin git@github.com:YourUsername/your-app.git
-```
-work with SSH, then you won't have to enter GitHub credentials every time you push code to GitHub [help connecting to github with ssh](https://help.github.com/articles/connecting-to-github-with-ssh/)
+PATTERN | DESCRIPTION
+------------ | -------------
+docker run `image` | RUN A CONTAINER FROM AN IMAGE (By default the container is running in attach mode)
+docker run `image`:`tag`	| RUN A CONTAINER FROM AN IMAGE FOR A SPECIFIC VERSION
+docker run -d `image` | RUN A CONTAINER IN DETACH MODE (If you would like to attach back to the running container) <br/>docker attach `conatiner`
+docker run -i `image`	| RUN CONTAINER IN INTERACTIVE MODE
+docker run -it `image`	| RUN CONTAINER IN INTERACTIVE MODE AND ATTACHED TO TERMINAL
 
-7. View the list of repositories
+
+when you run the `docker run Ubuntu` command, it runs an instance of ubuntu image and exits immediately.
+If you list all containers using `docker ps -a` including those that are stopped you will see that the new container you ran is in an exited stage.
+Because containers are not meant to host an operating system.
+Containers are meant to run a specific task or process, Once the task is complete the container exits a container only lives as long as the process inside it is alive.
+If the web service inside the container is stopped or a crash then the container exits.
+This is why when you run a container from an ubuntu image it stops immediately because Ubuntu is just an image of an operating system that is used as the base image for other applications. There is no process or application running in it by default.
+
+
+## DOWNLOAD AN IMAGE BUT NOT RUNNING
 ```git
-git remote -v
-```
-8. Ignore files with [.gitignore](https://help.github.com/articles/ignoring-files/)
-```git
-.gitignore
+docker pull `image`
 ```
 
-PATTERN | EXAMPLE | DESCRIPTION
------------- | ------------- | -------------
-**/logs | logs/debug.log <br /> logs/monday/foo.bar <br /> build/logs/debug.log | You can prepend a pattern with a double asterisk to match directories anywhere in the repository.
-**/logs/debug.log	| logs/debug.log <br /> build/logs/debug.log <br /> but not <br /> logs/build/debug.log	| You can also use a double asterisk to match files based on their name and the name of their parent directory.
-*.log	| debug.log <br /> foo.log <br /> .log <br /> logs/debug.log | An asterisk is a wildcard that matches zero or more characters.
-*.log <br /> !important.log	| debug.log <br /> trace.log <br /> but not <br /> important.log <br /> logs/important.log	| Prepending an exclamation mark to a pattern negates it. If a file matches a pattern, but also matches a negating pattern defined later in the file, it will not be ignored.
-*.log <br /> !important/*.log	| trace.*	debug.log <br /> important/trace.log <br /> but not <br /> important/debug.log	| Patterns defined after a negating pattern will re-ignore any previously negated files.
-/debug.log | debug.log <br /> but not <br /> logs/debug.log	| Prepending a slash matches files only in the repository root.
-debug.log	 | debug.log <br /> logs/debug.log |	By default, patterns match files in any directory
-debug?.log	| debug0.log <br /> debugg.log <br /> but not <br /> debug10.log |	A question mark matches exactly one character.
-debug[0-9].log |	debug0.log <br /> debug1.log <br /> but not debug10.log |	Square brackets can also be used to match a single character from a specified range.
-debug[01].log |	debug0.log <br /> debug1.log <br /> but not <br /> debug2.log <br /> debug01.log |	Square brackets match a single character form the specified set.
-debug[!01].log	| debug2.log <br /> but not <br /> debug0.log <br /> debug1.log <br /> debug01.log |	An exclamation mark can be used to match any character except one from the specified set.
-debug[a-z].log |	debuga.log <br /> debugb.log <br /> but not <br /> debug1.log |	Ranges can be numeric or alphabetic.
-logs |	logs <br /> logs/debug.log <br /> logs/latest/foo.bar <br /> build/logs <br /> build/logs/debug.log |	If you don't append a slash, the pattern will match both files and the contents of directories with that name. In the example matches on the left, both directories and files named logs are ignored
-logs/ |	logs/debug.log <br /> logs/latest/foo.bar <br /> build/logs/foo.bar <br /> build/logs/latest/debug.log |	Appending a slash indicates the pattern is a directory. The entire contents of any directory in the repository matching that name – including all of its files and subdirectories – will be ignored
-logs/ <br /> !logs/important.log |	logs/debug.log <br /> logs/important.log |	Wait a minute! Shouldn't logs/important.log be negated in the example on the left <br /><br /> Nope! Due to a performance-related quirk in Git, you can not negate a file that is ignored due to a pattern matching a directory
-logs/**/debug.log |	logs/debug.log <br /> logs/monday/debug.log <br /> logs/monday/pm/debug.log |	A double asterisk matches zero or more directories.
-logs/*day/debug.log |	logs/monday/debug.log <br /> logs/tuesday/debug.log <br /> but not <br /> logs/latest/debug.log |	Wildcards can be used in directory names as well.
-logs/debug.log |	logs/debug.log <br /> but not <br /> debug.log <br /> build/logs/debug.log |	Patterns specifying a file in a particular directory are relative to the repository root. (You can prepend a slash if you like, but it doesn't do anything special.)
 
-In addition to these characters, you can use # to include comments in your .gitignore file:
+## GET RUNNING CONTAINER LIST
 ```git
-# ignore all logs
-*.log
+docker ps
+docker ps -a
+docker ps | less -S
+docker ps --format 'table {{ .ID }}\t{{.Image}}\t{{ .Names }}\t{{ .Ports }}' -s
+docker ps --format 'table {{ .ID }}\t{{.Image}}\t{{ .Names }}\t{{ .Ports }}' | less -S
+docker ps --format "{{json .}}" --no-trunc
+docker ps --format "{{json .}}" --no-trunc | jq
 ```
+
+
+## STOP A RUNNING CONATINER
+```git
+docker stop `conatiner`
+```
+
+
+## GET ALL IMAGES
+```git
+docker images
+```
+
+
+## REMOVE A STOPPED OR EXITED CONATINER
+```git
+docker rm `container` `container` `container`
+```
+
+
+## REMOVE AN IMAGE 
+Must ensure no conatiner running off of that image, must stop and delete all container first
+```git
+docker rmi `image`
+```
+
+
+## ACCESS DOCKER CONSOLE TO EXECUTE A COMMAND
+```git
+docker exec -it CONTAINER_ID /bin/bash
+docker exec -it CONTAINER_ID bash
+docker exec -it CONTAINER_ID sh
+```
+
+
+## GET RUNNING PROCESSES IN THE CONTAINER
+```git
+docker exec -it `container` ps -eaf
+```
+
+
+## PORT MAPPING
+Default IP of a docker container is `172.X.0.X`, this is internal IP and only accessible within docker host.
+Default IP of the docker host is `192.168.1.X / host.docker.internal`, this IP is accessible outside the docker host.
+
+MAP port to docker container
+```git
+-p 80:5000
+```
+
+
+
+
+
+
 
 You can use \ to escape .gitignore pattern characters if you have files or directories containing them:
 ```git
